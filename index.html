@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miray Walaa — Full-Stack Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #f2f0ec;
+      --border: rgba(0,0,0,0.1);
+      --border-hover: rgba(0,0,0,0.25);
+      --text: #1a1a18;
+      --muted: #6b6a65;
+      --hint: #a09f9a;
+      --accent: #1a1a18;
+      --accent-fg: #faf9f7;
+      --tag-bg: #eeece8;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* fade-in on load */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+    .fade:nth-child(1) { animation-delay: 0.05s; }
+    .fade:nth-child(2) { animation-delay: 0.15s; }
+    .fade:nth-child(3) { animation-delay: 0.25s; }
+    .fade:nth-child(4) { animation-delay: 0.35s; }
+    .fade:nth-child(5) { animation-delay: 0.45s; }
+
+    /* layout */
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    /* nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(250,249,247,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+      z-index: 100;
+      padding: 0 1.5rem;
+    }
+    .nav-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* hero */
+    .hero {
+      padding-top: 52px;
+      margin-bottom: 4rem;
+    }
+    .hero-top {
+      padding-top: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .available-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--tag-bg);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 1.5rem;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      background: #3a9e6e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 7vw, 56px);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 0.5px solid var(--border-hover);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover { opacity: 0.82; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: var(--surface); }
+
+    /* section label */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--hint);
+      margin-bottom: 1.25rem;
+    }
+
+    /* skills */
+    .skills-section { margin-bottom: 4rem; }
+    .skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill {
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--tag-bg);
+      border: 0.5px solid var(--border);
+      color: var(--muted);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .skill:hover { border-color: var(--border-hover); color: var(--text); }
+
+    /* projects */
+    .projects-section { margin-bottom: 4rem; }
+    .projects-list { display: flex; flex-direction: column; gap: 12px; }
+    .project-card {
+      display: block;
+      background: #fff;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .project-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+    .project-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .project-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .lang-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--hint);
+    }
+    .lang-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .arrow-icon {
+      font-size: 18px;
+      color: var(--hint);
+      flex-shrink: 0;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .project-card:hover .arrow-icon {
+      color: var(--text);
+      transform: translate(2px, -2px);
+    }
+
+    /* contact */
+    .contact-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      border: 0.5px solid var(--border);
+    }
+    .contact-section h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .contact-section p {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 320px;
+    }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--hint);
+      border-top: 0.5px solid var(--border);
+    }
+
+    @media (max-width: 500px) {
+      .contact-section { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#">MW</a>
+      <div class="nav-links">
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-top">
+        <div class="fade">
+          <div class="available-badge"><span class="dot"></span> Available for freelance work</div>
+        </div>
+        <div class="fade">
+          <h1>Miray Walaa</h1>
+        </div>
+        <div class="fade">
+          <p class="tagline">Full-stack developer based in Cairo. I build clean, functional web experiences using JavaScript, Python, and Node.js — fast delivery, clean code, no drama.</p>
+        </div>
+        <div class="fade">
+          <div class="hero-btns">
+            <a class="btn btn-primary" href="https://www.fiverr.com" target="_blank" rel="noopener">Hire me on Fiverr</a>
+            <a class="btn btn-secondary" href="https://github.com/MirayWalaa" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-secondary" href="mailto:your@email.com">Email me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="skills-section fade" id="skills">
+      <p class="section-label">Skills</p>
+      <div class="skills-wrap">
+        <span class="skill">HTML / CSS</span>
+        <span class="skill">JavaScript</span>
+        <span class="skill">Python</span>
+        <span class="skill">Node.js</span>
+        <span class="skill">REST APIs</span>
+        <span class="skill">Responsive design</span>
+        <span class="skill">Bug fixing</span>
+        <span class="skill">Git / GitHub</span>
+        <span class="skill">Express.js</span>
+        <span class="skill">DOM manipulation</span>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects-section fade" id="projects">
+      <p class="section-label">Projects</p>
+      <div class="projects-list">
+
+        <a class="project-card" href="https://github.com/MirayWalaa/SE_Project" target="_blank" rel="noopener">
+          <div class="project-row">
+            <div>
+              <div class="project-name">SE Project</div>
+              <div class="project-desc">A full software engineering project applying real-world development practices — including requirements gathering, system design, and end-to-end implementation. Demonstrates ownership of the full project lifecycle from planning to delivery.</div>
+              <div class="project-meta">
+                <span class="lang-badge"><span class="lang-dot" style="background:#e8a838;"></span> Personal project</span>
+              </div>
+            </div>
+            <span class="arrow-icon">↗</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/MirayWalaa/Task_1" target="_blank" rel="noopener">
+          <div class="project-row">
+            <div>
+              <div class="project-name">JavaScript Advanced Lab — Task 1</div>
+              <div class="project-desc">First module of an advanced JavaScript course. Covers core language fundamentals, variable scoping, and modern ES6+ patterns used in production codebases.</div>
+              <div class="project-meta">
+                <span class="lang-badge"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+              </div>
+            </div>
+            <span class="arrow-icon">↗</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/MirayWalaa/Task_2" target="_blank" rel="noopener">
+          <div class="project-row">
+            <div>
+              <div class="project-name">JavaScript Advanced Lab — Task 2</div>
+              <div class="project-desc">Second module focusing on DOM manipulation and event handling. Builds interactive UI components without any external libraries.</div>
+              <div class="project-meta">
+                <span class="lang-badge"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+              </div>
+            </div>
+            <span class="arrow-icon">↗</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/MirayWalaa/Task_3" target="_blank" rel="noopener">
+          <div class="project-row">
+            <div>
+              <div class="project-name">JavaScript Advanced Lab — Task 3</div>
+              <div class="project-desc">Third module covering async JavaScript — Promises, async/await, and fetching data from external APIs. Includes error handling and loading state management.</div>
+              <div class="project-meta">
+                <span class="lang-badge"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+              </div>
+            </div>
+            <span class="arrow-icon">↗</span>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/MirayWalaa/Task_4" target="_blank" rel="noopener">
+          <div class="project-row">
+            <div>
+              <div class="project-name">JavaScript Advanced Lab — Task 4</div>
+              <div class="project-desc">Fourth and final module tying together all concepts — advanced data structures, functional programming patterns, and complex real-world problem solving in JavaScript.</div>
+              <div class="project-meta">
+                <span class="lang-badge"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+              </div>
+            </div>
+            <span class="arrow-icon">↗</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section fade" id="contact">
+      <div>
+        <h3>Let's work together</h3>
+        <p>Available for bug fixes, landing pages, APIs, and small web projects. Fast turnaround, clean code, clear communication.</p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="https://www.fiverr.com" target="_blank" rel="noopener">Fiverr profile</a>
+        <a class="btn btn-secondary" href="mailto:your@email.com">Email me</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Miray Walaa · Cairo, Egypt · Built with HTML & CSS</p>
+  </footer>
+
+</body>
+</html>
